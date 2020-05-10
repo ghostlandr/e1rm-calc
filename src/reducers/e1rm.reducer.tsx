@@ -2,14 +2,18 @@ import { calculateE1RM } from '../e1rm/calculate';
 
 import axios from 'axios';
 
-export const Actions = {
-    loadCalculations: 'load-calculations',
-    addUser: 'add-user',
-    calculate: 'calculate',
-    saveName: 'save-name',
-};
+type Actions = 
+    | { type: 'weight', payload: string }
+    | { type: 'reps', payload: string }
+    | { type: 'rpe', payload: string }
+    | { type: 'set-lift', payload: string }
+    // TODO: Add type
+    | { type: 'load-calculations', payload: any }
+    | { type: 'add-user', payload: { userId: string, name?: string } }
+    | { type: 'calculate' }
+    | { type: 'save-name', payload: string };
 
-export function reducer(state, action) {
+export function reducer(state: any, action: Actions) {
     switch (action.type) {
         case 'weight':
             return { ...state, weight: action.payload };
@@ -17,7 +21,9 @@ export function reducer(state, action) {
             return { ...state, reps: action.payload };
         case 'rpe':
             return { ...state, rpe: action.payload };
-        case Actions.calculate:
+        case 'set-lift':
+            return { ...state, lift: action.payload };
+        case 'calculate':
             const e1rm = calculateE1RM(state.weight, state.rpe, state.reps);
             if (e1rm === '') {
                 return state;
@@ -26,25 +32,19 @@ export function reducer(state, action) {
                 reps: state.reps,
                 weight: state.weight,
                 rpe: state.rpe,
+                lift: state.lift,
                 e1rm: e1rm.toFixed(2),
             };
-            console.log('making save');
-            axios.post('https://ghostlander-e1rm.builtwithdark.com/e1rm', {
-                ...calculation,
-                userId: state.userId,
-                created: new Date(),
-                lift: '',
-            });
             return {
                 ...state,
                 lastCalculation: calculation,
                 calculations: [calculation, ...state.calculations],
             };
-        case Actions.loadCalculations:
+        case 'load-calculations':
             return { ...state, loaded: true, calculations: action.payload };
-        case Actions.addUser:
+        case 'add-user':
             return { ...state, userId: action.payload.userId, name: action.payload.name };
-        case Actions.saveName:
+        case 'save-name':
             axios.post('https://ghostlander-e1rm.builtwithdark.com/user', {
                 userId: state.userId,
                 name: action.payload,

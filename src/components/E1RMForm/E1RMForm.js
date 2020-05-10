@@ -2,7 +2,7 @@ import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
-export default function E1RMForm({ rpe, weight, reps, setRpe, setWeight, setReps, onSubmit }) {
+export default function E1RMForm({ rpe, weight, reps, lift, setRpe, setWeight, setReps, setLift, onSubmit }) {
     return (
         <Form onSubmit={onSubmit}>
             <Form.Group controlId="rpe">
@@ -30,6 +30,10 @@ export default function E1RMForm({ rpe, weight, reps, setRpe, setWeight, setReps
                     value={reps}
                     onChange={(event) => setReps(event.target.value)}
                 ></Form.Control>
+            </Form.Group>
+            <Form.Group controlId="lift">
+                <Form.Label>Lift</Form.Label>
+                <Form.Control type="text" value={lift} onChange={(event) => setLift(event.target.value)}></Form.Control>
             </Form.Group>
             <Button type="submit">Submit form</Button>
         </Form>
