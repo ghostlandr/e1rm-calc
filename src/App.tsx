@@ -9,14 +9,14 @@ import E1RMForm from './components/E1RMForm/E1RMForm';
 import E1RMCalculations from './components/E1RMCalculations/E1RMCalculations';
 import Name from './components/Name/Name';
 
-import { reducer } from './reducers/e1rm.reducer';
+import { reducer, State } from './reducers/e1rm.reducer';
 
-export const initialState = {
+export const initialState: State = {
     reps: 0,
     weight: 0,
     rpe: 1,
     calculations: [],
-    lastCalculation: null,
+    lastCalculation: undefined,
     loaded: false,
     userId: '',
     name: '',
@@ -83,17 +83,17 @@ function App() {
                     <div className="e1rms--form">
                         <Name
                             name={state.name}
-                            saveName={(name: string) => dispatch({ type: 'save-name', payload: name })}
+                            onChange={(name: string) => dispatch({ type: 'save-name', payload: name })}
                         />
-                        {state.lastCalculation !== null && <div>Estimated 1RM: {state.lastCalculation.e1rm}</div>}
+                        {state.lastCalculation !== undefined && <div>Estimated 1RM: {state.lastCalculation.e1rm}</div>}
                         <E1RMForm
                             weight={state.weight}
                             reps={state.reps}
                             rpe={state.rpe}
                             lift={state.lift}
-                            setWeight={(weight: string) => dispatch({ type: 'weight', payload: weight })}
-                            setReps={(reps: string) => dispatch({ type: 'reps', payload: reps })}
-                            setRpe={(rpe: string) => dispatch({ type: 'rpe', payload: rpe })}
+                            setWeight={(weight: number) => dispatch({ type: 'weight', payload: weight })}
+                            setReps={(reps: number) => dispatch({ type: 'reps', payload: reps })}
+                            setRpe={(rpe: number) => dispatch({ type: 'rpe', payload: rpe })}
                             setLift={(lift: string) => dispatch({ type: 'set-lift', payload: lift })}
                             onSubmit={(e: FormEvent) => {
                                 e.preventDefault();

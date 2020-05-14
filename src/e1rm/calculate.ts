@@ -1,6 +1,6 @@
 // Percentages, as per the chart on page 21 of The Bridge eBook: http://www.barbellmedicine.com/the-bridge/
-const percentages = {
-    '10': {
+const percentages: { [key: number]: { [key: number]: number } } = {
+    10: {
         1: 100,
         2: 96,
         3: 92,
@@ -12,7 +12,7 @@ const percentages = {
         9: 76,
         10: 74,
     },
-    '9.5': {
+    9.5: {
         1: 98,
         2: 94,
         3: 91,
@@ -24,7 +24,7 @@ const percentages = {
         9: 75,
         10: 72,
     },
-    '9': {
+    9: {
         1: 96,
         2: 92,
         3: 89,
@@ -36,7 +36,7 @@ const percentages = {
         9: 74,
         10: 71,
     },
-    '8.5': {
+    8.5: {
         1: 94,
         2: 91,
         3: 88,
@@ -48,7 +48,7 @@ const percentages = {
         9: 72,
         10: 69,
     },
-    '8': {
+    8: {
         1: 92,
         2: 89,
         3: 86,
@@ -60,7 +60,7 @@ const percentages = {
         9: 71,
         10: 68,
     },
-    '7.5': {
+    7.5: {
         1: 91,
         2: 88,
         3: 85,
@@ -72,7 +72,7 @@ const percentages = {
         9: 69,
         10: 67,
     },
-    '7': {
+    7: {
         1: 89,
         2: 86,
         3: 84,
@@ -84,7 +84,7 @@ const percentages = {
         9: 68,
         10: 65,
     },
-    '6.5': {
+    6.5: {
         1: 88,
         2: 85,
         3: 82,
@@ -98,7 +98,7 @@ const percentages = {
     },
 };
 
-function lookupPercentage(rpe, reps) {
+function lookupPercentage(rpe: number, reps: number): number {
     return percentages[rpe][reps];
 }
 
@@ -110,9 +110,9 @@ function lookupPercentage(rpe, reps) {
  * @param {number} reps The number of repetitions performed in this set.
  * @return The estimated 1RM as per calculations from The Bridge eBook
  */
-export function calculateE1RM(totalWeight, rpe, reps) {
+export function calculateE1RM(totalWeight: number, rpe: number, reps: number): number {
     if (totalWeight === 0 || rpe === 1 || reps === 0) {
-        return '';
+        return 0;
     }
     const percentageFromChart = lookupPercentage(rpe, reps);
     return (totalWeight * 100) / percentageFromChart;

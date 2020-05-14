@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
-export default function Name({ name, saveName }) {
+export default function Name({ name, onChange }: { name?: string, onChange: (name: string) => void}) {
     const [editing, setEditing] = useState(false);
-    const [localName, setLocalName] = useState(name);
+    const [localName, setLocalName] = useState(name || '');
     let nameArea;
     if (editing) {
         nameArea = (
@@ -17,7 +17,7 @@ export default function Name({ name, saveName }) {
                 <Button
                     onClick={() => {
                         setEditing(false);
-                        saveName(localName);
+                        onChange(localName);
                     }}
                 >
                     Save

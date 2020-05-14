@@ -1,8 +1,20 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
-export default function E1RMForm({ rpe, weight, reps, lift, setRpe, setWeight, setReps, setLift, onSubmit }) {
+interface E1RMFormProps {
+    rpe: number;
+    weight: number;
+    reps: number;
+    lift: string;
+    setRpe: (rpe: number) => void;
+    setWeight: (weight: number) => void;
+    setReps: (reps: number) => void;
+    setLift: (lift: string) => void;
+    onSubmit: any;
+}
+
+const E1RMForm: FunctionComponent<E1RMFormProps> = ({ rpe, weight, reps, lift, setRpe, setWeight, setReps, setLift, onSubmit }) => {
     return (
         <Form onSubmit={onSubmit}>
             <Form.Group controlId="rpe">
@@ -12,7 +24,7 @@ export default function E1RMForm({ rpe, weight, reps, lift, setRpe, setWeight, s
                     max="10"
                     min="1"
                     value={rpe}
-                    onChange={(event) => setRpe(event.target.value)}
+                    onChange={(event) => setRpe(+event.target.value)}
                 ></Form.Control>
             </Form.Group>
             <Form.Group controlId="weight">
@@ -20,7 +32,7 @@ export default function E1RMForm({ rpe, weight, reps, lift, setRpe, setWeight, s
                 <Form.Control
                     type="number"
                     value={weight}
-                    onChange={(event) => setWeight(event.target.value)}
+                    onChange={(event) => setWeight(+event.target.value)}
                 ></Form.Control>
             </Form.Group>
             <Form.Group controlId="reps">
@@ -28,7 +40,7 @@ export default function E1RMForm({ rpe, weight, reps, lift, setRpe, setWeight, s
                 <Form.Control
                     type="number"
                     value={reps}
-                    onChange={(event) => setReps(event.target.value)}
+                    onChange={(event) => setReps(+event.target.value)}
                 ></Form.Control>
             </Form.Group>
             <Form.Group controlId="lift">
@@ -39,3 +51,5 @@ export default function E1RMForm({ rpe, weight, reps, lift, setRpe, setWeight, s
         </Form>
     );
 }
+
+export default E1RMForm;
