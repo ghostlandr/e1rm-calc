@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
-export default function Name({ name, onChange }: { name?: string, onChange: (name: string) => void}) {
+type NameProps = { name?: string, onChange: (name: string) => void};
+
+export default function Name(props: NameProps) {
     const [editing, setEditing] = useState(false);
-    const [localName, setLocalName] = useState(name || '');
+    const [localName, setLocalName] = useState(props.name);
+    console.log({ name: props.name, localName });
     let nameArea;
     if (editing) {
         nameArea = (
@@ -17,7 +20,7 @@ export default function Name({ name, onChange }: { name?: string, onChange: (nam
                 <Button
                     onClick={() => {
                         setEditing(false);
-                        onChange(localName);
+                        props.onChange(localName || '');
                     }}
                 >
                     Save
@@ -27,7 +30,7 @@ export default function Name({ name, onChange }: { name?: string, onChange: (nam
     } else {
         nameArea = (
             <span data-testid="name" onClick={() => setEditing(true)}>
-                {name !== null ? name : 'Your name'}
+                {props.name !== null ? props.name : 'Your name'}
             </span>
         );
     }

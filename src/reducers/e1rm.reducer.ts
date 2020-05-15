@@ -1,13 +1,12 @@
 import { calculateE1RM } from '../e1rm/calculate';
 
-import axios from 'axios';
-
 export interface Calculation {
     weight: number;
     rpe: number;
     reps: number;
     lift: string;
     e1rm: string;
+    created?: Date;
 }
 
 export interface State {
@@ -54,6 +53,7 @@ export function reducer(state: State, action: Actions): State {
                 rpe: state.rpe,
                 lift: state.lift,
                 e1rm: e1rm.toFixed(2),
+                created: new Date(),
             };
             return {
                 ...state,
@@ -65,11 +65,6 @@ export function reducer(state: State, action: Actions): State {
         case 'add-user':
             return { ...state, userId: action.payload.userId, name: action.payload.name };
         case 'save-name':
-            // FIXME: A side effect in a reducer (but at least it is idempotent)
-            axios.post('https://ghostlander-e1rm.builtwithdark.com/user', {
-                userId: state.userId,
-                name: action.payload,
-            });
             return { ...state, name: action.payload };
         default:
             throw new Error();

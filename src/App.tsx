@@ -62,6 +62,17 @@ function App() {
         fetchData();
     }, [state.loaded, state.userId]);
 
+    // FIXME: How to prevent this from firing off on initial load if they had a name to start with?
+    useEffect(() => {
+        if (state.name === '') {
+            return;
+        }
+        axios.post('https://ghostlander-e1rm.builtwithdark.com/user', {
+            userId: state.userId,
+            name: state.name,
+        });
+    }, [state.name, state.userId]);
+
     useEffect(() => {
         if (!state.lastCalculation) {
             return;
@@ -69,7 +80,6 @@ function App() {
         axios.post('https://ghostlander-e1rm.builtwithdark.com/e1rm', {
             ...state.lastCalculation,
             userId: state.userId,
-            created: new Date(),
         });
     }, [state.lastCalculation, state.userId]);
 

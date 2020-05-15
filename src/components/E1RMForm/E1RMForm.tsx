@@ -45,7 +45,14 @@ const E1RMForm: FunctionComponent<E1RMFormProps> = ({ rpe, weight, reps, lift, s
             </Form.Group>
             <Form.Group controlId="lift">
                 <Form.Label>Lift</Form.Label>
-                <Form.Control type="text" value={lift} onChange={(event) => setLift(event.target.value)}></Form.Control>
+                <Form.Control as="select" required={true} value={lift} onChange={(event) => setLift(event.target.value)}>
+                    <option value="">Pick one</option>
+                    <option value="squat">Squat</option>
+                    <option value="bench">Bench</option>
+                    <option value="deadlift">Deadlift</option>
+                    <option value="ohp">Overhead Press</option>
+                    <option value="other">Other</option>
+                </Form.Control>
             </Form.Group>
             <Button type="submit">Submit form</Button>
         </Form>
