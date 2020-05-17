@@ -14,10 +14,8 @@ export interface State {
     rpe: number;
     reps: number;
     lift: string;
-    userId?: string;
     loaded: boolean;
     calculations: Calculation[];
-    name?: string;
     lastCalculation?: Calculation;
 }
 
@@ -28,9 +26,7 @@ export type Actions =
     | { type: 'rpe'; payload: number }
     | { type: 'set-lift'; payload: string }
     | { type: 'load-calculations'; payload: Calculation[] }
-    | { type: 'add-user'; payload: { userId: string; name?: string } }
-    | { type: 'calculate' }
-    | { type: 'save-name'; payload: string };
+    | { type: 'calculate' };
 
 export function reducer(state: State, action: Actions): State {
     switch (action.type) {
@@ -62,10 +58,6 @@ export function reducer(state: State, action: Actions): State {
             };
         case 'load-calculations':
             return { ...state, loaded: true, calculations: action.payload };
-        case 'add-user':
-            return { ...state, userId: action.payload.userId, name: action.payload.name };
-        case 'save-name':
-            return { ...state, name: action.payload };
         default:
             throw new Error();
     }

@@ -7,8 +7,6 @@ export const initialState: State = {
     calculations: [],
     lastCalculation: undefined,
     loaded: false,
-    userId: '',
-    name: '',
     lift: '',
 };
 
