@@ -14,7 +14,7 @@ import { reducer, State } from './reducers/e1rm.reducer';
 export const initialState: State = {
     reps: 0,
     weight: 0,
-    rpe: 1,
+    rpe: 8,
     calculations: [],
     lastCalculation: undefined,
     loaded: false,
