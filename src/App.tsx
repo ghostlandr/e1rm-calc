@@ -1,10 +1,10 @@
-import React, { useReducer, useEffect, FormEvent } from 'react';
+import React, { useReducer, useEffect, FormEvent, useState } from 'react';
 import Navbar from 'react-bootstrap/Navbar';
+import Spinner from 'react-bootstrap/Spinner';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
 import './App.css';
-// import E1RM from './components/E1RM/E1RM';
 import E1RMForm from './components/E1RMForm/E1RMForm';
 import E1RMCalculations from './components/E1RMCalculations/E1RMCalculations';
 import Name from './components/Name/Name';
@@ -18,23 +18,25 @@ export const initialState: State = {
     calculations: [],
     lastCalculation: undefined,
     loaded: false,
-    userId: '',
-    name: '',
     lift: '',
 };
 
 function App() {
     const [state, dispatch] = useReducer(reducer, initialState);
+    const [user, setUser] = useState({
+        userId: '',
+        name: ''
+    });
 
     useEffect(() => {
-        if (state.userId !== '') {
+        if (user.userId !== '') {
             return;
         }
         let { userId } = localStorage;
         if (!!userId) {
             async function fetchUser(uId: string) {
                 const response = await axios.get('https://ghostlander-e1rm.builtwithdark.com/user?userId=' + uId);
-                dispatch({ type: 'add-user', payload: response.data });
+                setUser(response.data);
             }
             fetchUser(userId);
             return;
@@ -44,34 +46,36 @@ function App() {
         async function createUser(uId: string) {
             const response = await axios.post('https://ghostlander-e1rm.builtwithdark.com/user', { userId: uId });
             if (response.status === 200) {
-                dispatch({ type: 'add-user', payload: {userId: uId} });
+                setUser({ ...user, userId: uId });
                 localStorage.userId = uId;
             }
         }
         createUser(userId);
-    }, [state.userId]);
+    }, [user]);
 
     useEffect(() => {
-        if (state.loaded || state.userId === '') {
+        if (state.loaded || user.userId === '') {
             return;
         }
         async function fetchData() {
-            const response = await axios.get('https://ghostlander-e1rm.builtwithdark.com/e1rms?userId=' + state.userId);
+            const response = await axios.get('https://ghostlander-e1rm.builtwithdark.com/e1rms?userId=' + user.userId);
             dispatch({ type: 'load-calculations', payload: response.data });
         }
         fetchData();
-    }, [state.loaded, state.userId]);
+    }, [state.loaded, user.userId]);
 
     // FIXME: How to prevent this from firing off on initial load if they had a name to start with?
+    // Maybe split the user stuff up and put it in a separate state object or perhaps the context? Need to read more
+    // about how context works.
     useEffect(() => {
-        if (state.name === '') {
+        if (user.name === '') {
             return;
         }
         axios.post('https://ghostlander-e1rm.builtwithdark.com/user', {
-            userId: state.userId,
-            name: state.name,
+            userId: user.userId,
+            name: user.name,
         });
-    }, [state.name, state.userId]);
+    }, [user]);
 
     useEffect(() => {
         if (!state.lastCalculation) {
@@ -79,9 +83,16 @@ function App() {
         }
         axios.post('https://ghostlander-e1rm.builtwithdark.com/e1rm', {
             ...state.lastCalculation,
-            userId: state.userId,
+            userId: user.userId,
         });
-    }, [state.lastCalculation, state.userId]);
+    }, [state.lastCalculation, user.userId]);
+
+    let calculationsArea = <Spinner animation="border" role="status">
+        <span className="sr-only">Loading...</span>
+    </Spinner>;
+    if (state.loaded) {
+        calculationsArea = <E1RMCalculations calculations={state.calculations} />;
+    }
 
     return (
         <div>
@@ -92,8 +103,8 @@ function App() {
                 <div className="e1rms">
                     <div className="e1rms--form">
                         <Name
-                            name={state.name}
-                            onChange={(name: string) => dispatch({ type: 'save-name', payload: name })}
+                            name={user.name}
+                            onChange={(name: string) => setUser({ ...user, name })}
                         />
                         {state.lastCalculation !== undefined && <div>Estimated 1RM: {state.lastCalculation.e1rm}</div>}
                         <E1RMForm
@@ -111,7 +122,7 @@ function App() {
                             }}
                         />
                     </div>
-                    <E1RMCalculations calculations={state.calculations} />
+                    {calculationsArea}
                 </div>
             </div>
         </div>

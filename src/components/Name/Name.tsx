@@ -6,7 +6,7 @@ type NameProps = { name?: string, onChange: (name: string) => void};
 
 export default function Name(props: NameProps) {
     const [editing, setEditing] = useState(false);
-    const [localName, setLocalName] = useState(props.name);
+    const [localName, setLocalName] = useState(props.name || '');
     console.log({ name: props.name, localName });
     let nameArea;
     if (editing) {
@@ -29,8 +29,8 @@ export default function Name(props: NameProps) {
         );
     } else {
         nameArea = (
-            <span data-testid="name" onClick={() => setEditing(true)}>
-                {props.name !== null ? props.name : 'Your name'}
+            <span onClick={() => setEditing(true)}>
+                {!!props.name ? props.name : 'Your name'}
             </span>
         );
     }

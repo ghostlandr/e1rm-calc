@@ -14,7 +14,7 @@ export interface State {
     rpe: number;
     reps: number;
     lift: string;
-    userId: string;
+    userId?: string;
     loaded: boolean;
     calculations: Calculation[];
     name?: string;
