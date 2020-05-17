@@ -1,5 +1,8 @@
 import React, { useReducer, useEffect, FormEvent, useState } from 'react';
 import Navbar from 'react-bootstrap/Navbar';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import Spinner from 'react-bootstrap/Spinner';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
@@ -95,37 +98,42 @@ function App() {
     }
 
     return (
-        <div>
-            <Navbar bg="light">
-                <Navbar.Brand href="#home">Estimated 1 rep max calculator</Navbar.Brand>
-            </Navbar>
-            <div className="app">
-                <div className="e1rms">
-                    <div className="e1rms--form">
-                        <Name
-                            name={user.name}
-                            onChange={(name: string) => setUser({ ...user, name })}
-                        />
-                        {state.lastCalculation !== undefined && <div>Estimated 1RM: {state.lastCalculation.e1rm}</div>}
-                        <E1RMForm
-                            weight={state.weight}
-                            reps={state.reps}
-                            rpe={state.rpe}
-                            lift={state.lift}
-                            setWeight={(weight: number) => dispatch({ type: 'weight', payload: weight })}
-                            setReps={(reps: number) => dispatch({ type: 'reps', payload: reps })}
-                            setRpe={(rpe: number) => dispatch({ type: 'rpe', payload: rpe })}
-                            setLift={(lift: string) => dispatch({ type: 'set-lift', payload: lift })}
-                            onSubmit={(e: FormEvent) => {
-                                e.preventDefault();
-                                dispatch({ type: 'calculate' });
-                            }}
-                        />
-                    </div>
+        <Container fluid>
+            <Row>
+                <Col>
+                    <Navbar bg="light" className="justify-content-between">
+                        <Navbar.Brand href="#home">Estimated 1 rep max calculator</Navbar.Brand>
+                        <span>
+                            E1RMs for <Name
+                                name={user.name}
+                                onChange={(name: string) => setUser({ ...user, name })}
+                            />
+                        </span>
+                    </Navbar>
+                </Col>
+            </Row>
+            <Row>
+                <Col md={4}>
+                    <E1RMForm
+                        weight={state.weight}
+                        reps={state.reps}
+                        rpe={state.rpe}
+                        lift={state.lift}
+                        setWeight={(weight: number) => dispatch({ type: 'weight', payload: weight })}
+                        setReps={(reps: number) => dispatch({ type: 'reps', payload: reps })}
+                        setRpe={(rpe: number) => dispatch({ type: 'rpe', payload: rpe })}
+                        setLift={(lift: string) => dispatch({ type: 'set-lift', payload: lift })}
+                        onSubmit={(e: FormEvent) => {
+                            e.preventDefault();
+                            dispatch({ type: 'calculate' });
+                        }}
+                    />
+                </Col>
+                <Col md={8}>
                     {calculationsArea}
-                </div>
-            </div>
-        </div>
+                </Col>
+            </Row>
+        </Container>
     );
 }
 

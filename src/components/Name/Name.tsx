@@ -12,7 +12,7 @@ export default function Name(props: NameProps) {
             setLocalName(props.name || '');
         }
     }, [props.name]);
-    console.log({ name: props.name, localName });
+
     let nameArea;
     if (editing) {
         nameArea = (
@@ -40,8 +40,8 @@ export default function Name(props: NameProps) {
         );
     }
     return (
-        <div>
+        <>
             <strong>{nameArea}</strong>
-        </div>
+        </>
     );
 }
