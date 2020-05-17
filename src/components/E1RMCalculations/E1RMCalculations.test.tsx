@@ -18,8 +18,8 @@ const mockCalculations: Calculation[] = [
         weight: 150,
         reps: 5,
         rpe: 7,
-    }
-]
+    },
+];
 
 describe('E1RMCalculations', () => {
     it('renders nothing if it gets 0 calculations', () => {

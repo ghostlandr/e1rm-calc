@@ -4,7 +4,7 @@ import { formatDistance } from 'date-fns';
 
 import { Calculation } from '../../reducers/e1rm.reducer';
 
-type E1RMCalculationsProps = {
+interface E1RMCalculationsProps {
     calculations: Calculation[];
 }
 
