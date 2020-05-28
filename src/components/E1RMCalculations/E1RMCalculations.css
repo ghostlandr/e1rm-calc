@@ -1,0 +1,9 @@
+.calculations__heading {
+    display: flex;
+}
+
+.calculations__heading .lift-selector {
+    display: inline-block;
+    width: 200px;
+    margin-left: 12px;
+}

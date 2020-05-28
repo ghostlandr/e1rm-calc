@@ -49,12 +49,15 @@ function App() {
         async function createUser(uId: string) {
             const response = await axios.post('https://ghostlander-e1rm.builtwithdark.com/user', { userId: uId });
             if (response.status === 200) {
-                setUser({ ...user, userId: uId });
+                setUser(u => {
+                    u.userId = uId;
+                    return u;
+                });
                 localStorage.userId = uId;
             }
         }
         createUser(userId);
-    }, [user]);
+    }, [user.userId]);
 
     useEffect(() => {
         if (state.loaded || user.userId === '') {
@@ -78,7 +81,7 @@ function App() {
             userId: user.userId,
             name: user.name,
         });
-    }, [user]);
+    }, [user.name, user.userId]);
 
     useEffect(() => {
         if (!state.lastCalculation) {
