@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, SyntheticEvent } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
@@ -13,20 +13,27 @@ export default function Name(props: NameProps) {
         }
     }, [props.name]);
 
+    function handleSubmit(e: SyntheticEvent) {
+        e.preventDefault();
+        handleClick();
+    }
+
+    function handleClick() {
+        setEditing(false);
+        props.onChange(localName || '');
+    }
+
     let nameArea;
     if (editing) {
         nameArea = (
-            <Form inline>
+            <Form inline onSubmit={handleSubmit}>
                 <Form.Control
                     type="text"
                     value={localName}
                     onChange={(event) => setLocalName(event.target.value)}
                 ></Form.Control>
                 <Button
-                    onClick={() => {
-                        setEditing(false);
-                        props.onChange(localName || '');
-                    }}
+                    onClick={handleClick}
                 >
                     Save
                 </Button>
