@@ -61,8 +61,11 @@ function App() {
     }, [user.userId]);
 
     useEffect(() => {
-        if (state.loaded || user.userId === '') {
+        if (state.loaded) {
             return;
+        }
+        if (user.userId === '') {
+            dispatch({ type: 'load-calculations', payload: [] });
         }
         async function fetchData() {
             const response = await axios.get('https://ghostlander-e1rm.builtwithdark.com/e1rms?userId=' + user.userId);
