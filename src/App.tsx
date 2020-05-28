@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, FormEvent, useState } from 'react';
+import React, { useReducer, useEffect, FormEvent, useState, useRef } from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -30,6 +30,7 @@ function App() {
         userId: '',
         name: ''
     });
+    const userSetName = useRef(false);
 
     useEffect(() => {
         if (user.userId !== '') {
@@ -70,11 +71,11 @@ function App() {
         fetchData();
     }, [state.loaded, user.userId]);
 
-    // FIXME: How to prevent this from firing off on initial load if they had a name to start with?
-    // Maybe split the user stuff up and put it in a separate state object or perhaps the context? Need to read more
-    // about how context works.
     useEffect(() => {
         if (user.name === '') {
+            return;
+        }
+        if (!userSetName.current) {
             return;
         }
         axios.post('https://ghostlander-e1rm.builtwithdark.com/user', {
@@ -109,7 +110,10 @@ function App() {
                         <span>
                             E1RMs for <Name
                                 name={user.name}
-                                onChange={(name: string) => setUser({ ...user, name })}
+                                onChange={(name: string) => {
+                                    userSetName.current = true;
+                                    setUser({ ...user, name });
+                                }}
                             />
                         </span>
                     </Navbar>
