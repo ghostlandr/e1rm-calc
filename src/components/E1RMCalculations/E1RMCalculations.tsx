@@ -14,7 +14,9 @@ interface E1RMCalculationsProps {
 export default function E1RMCalculations({ calculations }: E1RMCalculationsProps) {
     const [liftFilter, setLiftFilter] = useState('');
     if (calculations.length < 1) {
-        return <span data-testid="no-data"></span>;
+        return <span data-testid="no-data">
+            You haven't calculated an estimated 1RM yet! Try out the form to your left <span role="img" aria-label="eyes">👀</span>
+        </span>;
     }
     const now = new Date();
     if (liftFilter !== '') {
