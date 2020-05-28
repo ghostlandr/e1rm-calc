@@ -39,6 +39,8 @@ const E1RMForm: FunctionComponent<E1RMFormProps> = ({ rpe, weight, reps, lift, s
                 <Form.Label>Repetitions</Form.Label>
                 <Form.Control
                     type="number"
+                    max="10"
+                    min="1"
                     value={reps}
                     onChange={(event) => setReps(+event.target.value)}
                 ></Form.Control>

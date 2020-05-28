@@ -15,7 +15,7 @@ import Name from './components/Name/Name';
 import { reducer, State } from './reducers/e1rm.reducer';
 
 export const initialState: State = {
-    reps: 0,
+    reps: 1,
     weight: 0,
     rpe: 8,
     calculations: [],
