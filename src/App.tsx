@@ -39,7 +39,8 @@ function App() {
         let { userId } = localStorage;
         if (!!userId) {
             async function fetchUser(uId: string) {
-                const response = await axios.get('https://ghostlander-e1rm.builtwithdark.com/user?userId=' + uId);
+                const response = await axios.get('/user?userId=' + uId);
+                console.log(response.data);
                 setUser(response.data);
             }
             fetchUser(userId);
@@ -48,7 +49,7 @@ function App() {
         // If they don't already have one, let's generate them one.
         userId = uuidv4();
         async function createUser(uId: string) {
-            const response = await axios.post('https://ghostlander-e1rm.builtwithdark.com/user', { userId: uId });
+            const response = await axios.post('/user', { userId: uId });
             if (response.status === 200) {
                 setUser(u => {
                     u.userId = uId;
@@ -66,9 +67,11 @@ function App() {
         }
         if (user.userId === '') {
             dispatch({ type: 'load-calculations', payload: [] });
+            return;
         }
         async function fetchData() {
-            const response = await axios.get('https://ghostlander-e1rm.builtwithdark.com/e1rms?userId=' + user.userId);
+            console.log(user.userId);
+            const response = await axios.get('/e1rms?userId=' + user.userId);
             dispatch({ type: 'load-calculations', payload: response.data });
         }
         fetchData();
@@ -81,7 +84,7 @@ function App() {
         if (!userSetName.current) {
             return;
         }
-        axios.post('https://ghostlander-e1rm.builtwithdark.com/user', {
+        axios.post('/user', {
             userId: user.userId,
             name: user.name,
         });
@@ -91,7 +94,7 @@ function App() {
         if (!state.lastCalculation) {
             return;
         }
-        axios.post('https://ghostlander-e1rm.builtwithdark.com/e1rm', {
+        axios.post('/e1rm', {
             ...state.lastCalculation,
             userId: user.userId,
         });
