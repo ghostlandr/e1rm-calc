@@ -38,13 +38,9 @@ export default function Name(props: NameProps) {
   } else {
     nameArea = (
       <span onClick={() => setEditing(true)}>
-        {!!props.name ? props.name : 'Your name'}
+        {!!localName ? localName : 'Your name'}
       </span>
     );
   }
-  return (
-    <>
-      <strong>{nameArea}</strong>
-    </>
-  );
+  return <strong>{nameArea}</strong>;
 }

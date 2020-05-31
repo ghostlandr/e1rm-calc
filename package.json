@@ -3,21 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "@types/jest": "^25.2.1",
-    "@types/node": "^13.13.5",
-    "@types/react": "^16.9.34",
-    "@types/react-dom": "^16.9.7",
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
     "date-fns": "^2.13.0",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1",
-    "typescript": "^3.8.3",
     "uuid": "^8.0.0"
   },
   "scripts": {
@@ -42,7 +33,16 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "@types/jest": "^25.2.1",
+    "@types/node": "^13.13.5",
+    "@types/react": "^16.9.34",
+    "@types/react-dom": "^16.9.7",
     "@types/uuid": "^7.0.3",
-    "node-sass": "^4.14.1"
+    "node-sass": "^4.14.1",
+    "react-scripts": "3.4.1",
+    "typescript": "^3.8.3"
   }
 }
