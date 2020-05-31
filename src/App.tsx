@@ -10,7 +10,6 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Spinner from 'react-bootstrap/Spinner';
-import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
 import './App.css';
@@ -19,11 +18,9 @@ import E1RMCalculations from './components/E1RMCalculations/E1RMCalculations';
 import Name from './components/Name/Name';
 
 import { reducer, State } from './reducers/e1rm.reducer';
+import ServerAdapter from './server-adapter';
 
 require('dotenv').config();
-
-const useDark = true;
-const darkRoot = 'https://ghostlander-e1rm.builtwithdark.com';
 
 export const initialState: State = {
   reps: 1,
@@ -50,11 +47,7 @@ function App() {
     let { userId } = localStorage;
     if (!!userId) {
       async function fetchUser(uId: string) {
-        let url = '/user?userId=' + uId;
-        if (useDark) {
-          url = darkRoot + url;
-        }
-        const response = await axios.get(url);
+        const response = await ServerAdapter.getUser(uId);
         console.log(response.data);
         setUser(response.data);
       }
@@ -64,11 +57,7 @@ function App() {
     // If they don't already have one, let's generate them one.
     userId = uuidv4();
     async function createUser(uId: string) {
-      let url = '/user';
-      if (useDark) {
-        url = darkRoot + url;
-      }
-      const response = await axios.post(url, { userId: uId });
+      const response = await ServerAdapter.createUser(uId);
       if (response.status === 200) {
         setUser((u) => {
           u.userId = uId;
@@ -90,12 +79,7 @@ function App() {
       return;
     }
     async function fetchData() {
-      console.log(user.userId);
-      let url = '/e1rms?userId=' + user.userId;
-      if (useDark) {
-        url = darkRoot + url;
-      }
-      const response = await axios.get(url);
+      const response = await ServerAdapter.getE1rms(user.userId);
       dispatch({ type: 'load-calculations', payload: response.data });
     }
     fetchData();
@@ -108,20 +92,14 @@ function App() {
     if (!userSetName.current) {
       return;
     }
-    axios.post('/user', {
-      userId: user.userId,
-      name: user.name,
-    });
+    ServerAdapter.updateUser(user.name, user.userId);
   }, [user.name, user.userId]);
 
   useEffect(() => {
     if (!state.lastCalculation) {
       return;
     }
-    axios.post('/e1rm', {
-      ...state.lastCalculation,
-      userId: user.userId,
-    });
+    ServerAdapter.putE1rm(state.lastCalculation, user.userId);
   }, [state.lastCalculation, user.userId]);
 
   let calculationsArea = (
